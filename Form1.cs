@@ -18,8 +18,7 @@ namespace Calculator
         double num1 = 0d;
         double num2 = 0d;
         int selectionStart = 0;
-        bool txtBoxNum1Selected = false;
-        //bool txtBoxNum2Selected = false;
+        bool txtBoxNum1Selected = true;
 
         char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​ator
@@ -266,17 +265,6 @@ namespace Calculator
 
         private void btnClearCurrent_Click(object sender, EventArgs e)
         {
-            //if (textBoxNum1.Text != "" && textBoxNum2.Text != "")
-            //{
-            //    textBoxNum2.Text = "";
-            //    textBoxNum2.Select();
-            //}
-            //else if (textBoxNum1.Text != "" && textBoxNum2.Text == "")
-            //{
-            //    textBoxNum1.Text = "";
-            //    textBoxNum1.Select();
-            //}
-
             if (txtBoxNum1Selected)
             {
                 textBoxNum1.Text = "";
@@ -420,13 +408,11 @@ namespace Calculator
         private void textBoxNum1_Enter(object sender, EventArgs e)
         {
             txtBoxNum1Selected = true;
-            //txtBoxNum2Selected = false;
         }
 
         private void textBoxNum2_Enter(object sender, EventArgs e)
         {
             txtBoxNum1Selected = false;
-            //txtBoxNum2Selected = true;
         }
 
         private void btnNumPad2_Click(object sender, EventArgs e)
