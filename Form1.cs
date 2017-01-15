@@ -17,6 +17,7 @@ namespace Calculator
         double catchFormatException;
         double num1 = 0d;
         double num2 = 0d;
+        int selectionStart = 0;
         bool txtBoxNum1Selected = false;
         //bool txtBoxNum2Selected = false;
 
@@ -117,14 +118,29 @@ namespace Calculator
         {
             if (txtBoxNum1Selected)
             {
-                textBoxNum1.Text = textBoxNum1.Text + num;
+                selectionStart = textBoxNum1.SelectionStart;
+                textBoxNum1.Text = textBoxNum1.Text.Insert(selectionStart, num);
+                textBoxNum1.SelectionStart = selectionStart + 1;
             }
             else
             {
-                textBoxNum2.Text = textBoxNum2.Text + num;
+                selectionStart = textBoxNum2.SelectionStart;
+                textBoxNum2.Text = textBoxNum2.Text.Insert(selectionStart, num);
+                textBoxNum2.SelectionStart = selectionStart + 1;
             }
         }
 
+        public void PreserveSelectedTextBoxSelection()
+        {
+            if (txtBoxNum1Selected)
+            {
+                textBoxNum1.Select();
+            }
+            else
+            {
+                textBoxNum2.Select();
+            }
+        }
 
         public void LabelText(string buttonOperation)
         {
@@ -218,31 +234,34 @@ namespace Calculator
 
         private void btnResult_Click(object sender, EventArgs e)
         {
-            if (textBoxNum1.Text == "")
+            if (lblOperation.Text != "")
             {
-                textBoxNum1.Text = "0";
+                if (textBoxNum1.Text == "")
+                {
+                    textBoxNum1.Text = "0";
+                }
+                if (textBoxNum2.Text == "")
+                {
+                    textBoxNum2.Text = "0";
+                }
+                switch (lblOperation.Text)
+                {
+                    case "+": textBoxResult.Text = Sum(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
+                    case "-": textBoxResult.Text = Substract(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
+                    case "*": textBoxResult.Text = Multiply(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
+                    case "/": textBoxResult.Text = Divide(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
+                    default:
+                        break;
+                }
+                lblAction.Text = $"{textBoxNum1.Text} {lblOperation.Text} {textBoxNum2.Text}";
+                textBoxNum1.Text = "";
+                textBoxNum2.Text = "";
+                lblOperation.Text = "";
+                lblNum1.Text = "";
+                lblNum2.Text = "";
+                textBoxNum1.Text = textBoxResult.Text;
+                textBoxNum2.Select();
             }
-            if (textBoxNum2.Text == "")
-            {
-                textBoxNum2.Text = "0";
-            }
-            switch (lblOperation.Text)
-            {
-                case "+": textBoxResult.Text = Sum(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
-                case "-": textBoxResult.Text = Substract(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
-                case "*": textBoxResult.Text = Multiply(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
-                case "/": textBoxResult.Text = Divide(textBoxNum1.Text, textBoxNum2.Text).ToString(); break;
-                default:
-                    break;
-            }
-            lblAction.Text = $"{textBoxNum1.Text} {lblOperation.Text} {textBoxNum2.Text}";
-            textBoxNum1.Text = "";
-            textBoxNum2.Text = "";
-            lblOperation.Text = "";
-            lblNum1.Text = "";
-            lblNum2.Text = "";
-            textBoxNum1.Text = textBoxResult.Text;
-            textBoxNum2.Select();
         }
 
         private void btnClearCurrent_Click(object sender, EventArgs e)
@@ -296,6 +315,7 @@ namespace Calculator
                 case Keys.Multiply: btnMultiply.PerformClick(); break;
                 case Keys.Divide: btnDivide.PerformClick(); break;
                 case Keys.Enter: btnResult.PerformClick(); break;
+                case Keys.Clear: btnDeleteLastDigit.PerformClick(); break;
                 default:
                     break;
             }
@@ -314,10 +334,11 @@ namespace Calculator
                     default:
                         break;
                 }
+                lblAction.Text = "";
             }
             catch (FormatException)
             {
-                MessageBox.Show("Wrong input!");
+                PreserveSelectedTextBoxSelection(); 
             }
             
         }
@@ -455,26 +476,34 @@ namespace Calculator
 
         private void btnDecimalMark_Click(object sender, EventArgs e)
         {
-            if (currentCultureDecimalMark == ',')
+            if (!textBoxNum1.Text.Contains(currentCultureDecimalMark.ToString()))
             {
-                AppendNumberFromNumPad(",");
+                AppendNumberFromNumPad(currentCultureDecimalMark.ToString());
             }
-            else
+            else if (!textBoxNum2.Text.Contains(currentCultureDecimalMark.ToString()))
             {
-                AppendNumberFromNumPad(".");
+                AppendNumberFromNumPad(currentCultureDecimalMark.ToString());
             }
         }
 
         private void btnDeleteLastDigit_Click(object sender, EventArgs e)
         {
-            if (txtBoxNum1Selected)
+            try
             {
-                textBoxNum1.Text = textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
+                if (txtBoxNum1Selected)
+                {
+                    textBoxNum1.Text = textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
+                }
+                else
+                {
+                    textBoxNum2.Text = textBoxNum2.Text.Remove(textBoxNum2.Text.Length - 1, 1);
+                }
             }
-            else
+            catch (ArgumentOutOfRangeException)
             {
-                textBoxNum2.Text = textBoxNum2.Text.Remove(textBoxNum2.Text.Length - 1, 1);
+                PreserveSelectedTextBoxSelection();
             }
+            
         }
     }
 }

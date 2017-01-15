@@ -190,7 +190,7 @@
             // 
             // btnClearAll
             // 
-            this.btnClearAll.Location = new System.Drawing.Point(168, 250);
+            this.btnClearAll.Location = new System.Drawing.Point(168, 248);
             this.btnClearAll.Name = "btnClearAll";
             this.btnClearAll.Size = new System.Drawing.Size(74, 34);
             this.btnClearAll.TabIndex = 12;
@@ -210,7 +210,7 @@
             // 
             // btnClearCurrent
             // 
-            this.btnClearCurrent.Location = new System.Drawing.Point(248, 250);
+            this.btnClearCurrent.Location = new System.Drawing.Point(248, 248);
             this.btnClearCurrent.Name = "btnClearCurrent";
             this.btnClearCurrent.Size = new System.Drawing.Size(34, 34);
             this.btnClearCurrent.TabIndex = 14;
@@ -457,7 +457,7 @@
             this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Calculator";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
