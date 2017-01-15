@@ -22,7 +22,7 @@ namespace Calculator
         //bool txtBoxNum2Selected = false;
 
         char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-        //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​atora
+        //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​ator
 
         public Form1()
         {
