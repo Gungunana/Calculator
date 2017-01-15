@@ -492,7 +492,7 @@ namespace Calculator
             {
                 if (txtBoxNum1Selected)
                 {
-                    textBoxNum1.Text = textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
+                    textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
                 }
                 else
                 {
