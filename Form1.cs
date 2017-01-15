@@ -15,7 +15,8 @@ namespace Calculator
         double catchFormatException;
         double num1 = 0d;
         double num2 = 0d;
-        //double currentOperation;
+        bool txtBoxNum1Selected = false;
+        bool txtBoxNum2Selected = false;
 
         public Form1()
         {
@@ -103,6 +104,18 @@ namespace Calculator
             }
         }
 
+        public void AppendNumberFromNumPad(string num)
+        {
+            if (txtBoxNum1Selected)
+            {
+                textBoxNum1.Text = textBoxNum1.Text + num;
+            }
+            else
+            {
+                textBoxNum2.Text = textBoxNum2.Text + num;
+            }
+        }
+
 
         public void LabelText(string buttonOperation)
         {
@@ -126,13 +139,11 @@ namespace Calculator
         private void button1_Click(object sender, EventArgs e)
         {
             LabelText(btnAdd.Text);
-            //currentOperation = Sum(textBoxNum1.Text, textBoxNum2.Text);
             MoveSelectorToEmptyTextBox();
         }
 
         private void textBoxNum1_TextChanged(object sender, EventArgs e)
         {
-            //char lastChar = textBoxNum1.Text[textBoxNum1.Text.Length - 1];
             try
             {
                 catchFormatException = double.Parse(textBoxNum1.Text);
@@ -181,27 +192,23 @@ namespace Calculator
         private void btnMultiply_Click(object sender, EventArgs e)
         {
             LabelText(btnMultiply.Text);
-            //currentOperation = Multiply(textBoxNum1.Text, textBoxNum2.Text);
             MoveSelectorToEmptyTextBox();
         }
 
         private void btnSubstract_Click(object sender, EventArgs e)
         {
             LabelText(btnSubstract.Text);
-            //currentOperation = Substract(textBoxNum1.Text, textBoxNum2.Text);
             MoveSelectorToEmptyTextBox();
         }
 
         private void btnDivide_Click(object sender, EventArgs e)
         {
             LabelText(btnDivide.Text);
-            //currentOperation = Divide(textBoxNum1.Text, textBoxNum2.Text);
             MoveSelectorToEmptyTextBox();
         }
 
         private void btnResult_Click(object sender, EventArgs e)
         {
-            //textBoxResult.Text = currentOperation.ToString();
             if (textBoxNum1.Text == "")
             {
                 textBoxNum1.Text = "0";
@@ -231,12 +238,15 @@ namespace Calculator
 
         private void btnClearCurrent_Click(object sender, EventArgs e)
         {
-            foreach (TextBox txtBox in new TextBox[] { textBoxNum1, textBoxNum2 })
+            if (textBoxNum1.Text != "" && textBoxNum2.Text != "")
             {
-                if (txtBox.Focused)
-                {
-                    txtBox.Text = "";
-                }
+                textBoxNum2.Text = "";
+                textBoxNum2.Select();
+            }
+            else if (textBoxNum1.Text != "" && textBoxNum2.Text == "")
+            {
+                textBoxNum1.Text = "";
+                textBoxNum1.Select();
             }
         }
 
@@ -256,7 +266,12 @@ namespace Calculator
         {
             switch (e.KeyCode)
             {
-                case Keys.Add: btnAdd.PerformClick(); break;
+                case Keys.Add:
+                    {
+                        btnAdd.Select();
+                        btnAdd.PerformClick();
+                    }
+                    break;
                 case Keys.Subtract: btnSubstract.PerformClick(); break;
                 case Keys.Multiply: btnMultiply.PerformClick(); break;
                 case Keys.Divide: btnDivide.PerformClick(); break;
@@ -268,15 +283,23 @@ namespace Calculator
 
         private void btnPercent_Click(object sender, EventArgs e)
         {
-            switch (lblOperation.Text)
+            try
             {
-                case "+": textBoxResult.Text = (double.Parse(textBoxNum2.Text) / 100 * double.Parse(textBoxNum1.Text)).ToString(); break;
-                case "-": textBoxResult.Text = (double.Parse(textBoxNum2.Text)/100*double.Parse(textBoxNum2.Text)).ToString(); break;
-                case "*": textBoxResult.Text = (Multiply(textBoxNum1.Text, textBoxNum2.Text) / 100).ToString(); break;
-                case "/": textBoxResult.Text = (Divide(textBoxNum1.Text, textBoxNum2.Text)*100).ToString() + " %"; break;
-                default:
-                    break;
+                switch (lblOperation.Text)
+                {
+                    case "+": textBoxResult.Text = (double.Parse(textBoxNum2.Text) / 100 * double.Parse(textBoxNum1.Text)).ToString(); break;
+                    case "-": textBoxResult.Text = (double.Parse(textBoxNum2.Text) / 100 * double.Parse(textBoxNum2.Text)).ToString(); break;
+                    case "*": textBoxResult.Text = (Multiply(textBoxNum1.Text, textBoxNum2.Text) / 100).ToString(); break;
+                    case "/": textBoxResult.Text = (Divide(textBoxNum1.Text, textBoxNum2.Text) * 100).ToString() + " %"; break;
+                    default:
+                        break;
+                }
             }
+            catch (FormatException)
+            {
+                MessageBox.Show("Wrong input!");
+            }
+            
         }
 
         private void lblAction_Click(object sender, EventArgs e)
@@ -342,6 +365,72 @@ namespace Calculator
                 lblNum1.Text = $"Reciprocal({textBoxNum1.Text})";
                 textBoxNum1.Text = (1 / double.Parse(textBoxNum1.Text)).ToString();
             }
+        }
+
+        private void btnNumPad1_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("1");
+        }
+
+        private void textBoxNum1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void textBoxNum1_Enter(object sender, EventArgs e)
+        {
+            txtBoxNum1Selected = true;
+            txtBoxNum2Selected = false;
+        }
+
+        private void textBoxNum2_Enter(object sender, EventArgs e)
+        {
+            txtBoxNum1Selected = false;
+            txtBoxNum2Selected = true;
+        }
+
+        private void btnNumPad2_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("2");
+        }
+
+        private void btnNumPad3_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("3");
+        }
+
+        private void btnNumPad4_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("4");
+        }
+
+        private void btnNumPad5_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("5");
+        }
+
+        private void btnNumPad6_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("6");
+        }
+
+        private void btnNumPad7_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("7");
+        }
+
+        private void btnNumPad8_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("8");
+        }
+
+        private void btnNumPad9_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("9");
+        }
+
+        private void btnNumPad0_Click(object sender, EventArgs e)
+        {
+            AppendNumberFromNumPad("0");
         }
     }
 }
