@@ -60,6 +60,8 @@
             this.btnNumPad2 = new System.Windows.Forms.Button();
             this.btnNumPad1 = new System.Windows.Forms.Button();
             this.btnNumPad0 = new System.Windows.Forms.Button();
+            this.btnDecimalMark = new System.Windows.Forms.Button();
+            this.btnDeleteLastDigit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAdd
@@ -208,7 +210,7 @@
             // 
             // btnClearCurrent
             // 
-            this.btnClearCurrent.Location = new System.Drawing.Point(248, 130);
+            this.btnClearCurrent.Location = new System.Drawing.Point(248, 250);
             this.btnClearCurrent.Name = "btnClearCurrent";
             this.btnClearCurrent.Size = new System.Drawing.Size(34, 34);
             this.btnClearCurrent.TabIndex = 14;
@@ -390,11 +392,35 @@
             this.btnNumPad0.UseVisualStyleBackColor = true;
             this.btnNumPad0.Click += new System.EventHandler(this.btnNumPad0_Click);
             // 
+            // btnDecimalMark
+            // 
+            this.btnDecimalMark.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnDecimalMark.Location = new System.Drawing.Point(108, 248);
+            this.btnDecimalMark.Name = "btnDecimalMark";
+            this.btnDecimalMark.Size = new System.Drawing.Size(34, 34);
+            this.btnDecimalMark.TabIndex = 32;
+            this.btnDecimalMark.Text = ",";
+            this.btnDecimalMark.UseVisualStyleBackColor = true;
+            this.btnDecimalMark.Click += new System.EventHandler(this.btnDecimalMark_Click);
+            // 
+            // btnDeleteLastDigit
+            // 
+            this.btnDeleteLastDigit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnDeleteLastDigit.Location = new System.Drawing.Point(248, 130);
+            this.btnDeleteLastDigit.Name = "btnDeleteLastDigit";
+            this.btnDeleteLastDigit.Size = new System.Drawing.Size(34, 34);
+            this.btnDeleteLastDigit.TabIndex = 33;
+            this.btnDeleteLastDigit.Text = "←";
+            this.btnDeleteLastDigit.UseVisualStyleBackColor = true;
+            this.btnDeleteLastDigit.Click += new System.EventHandler(this.btnDeleteLastDigit_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(445, 314);
+            this.Controls.Add(this.btnDeleteLastDigit);
+            this.Controls.Add(this.btnDecimalMark);
             this.Controls.Add(this.btnNumPad0);
             this.Controls.Add(this.btnNumPad3);
             this.Controls.Add(this.btnNumPad2);
@@ -474,6 +500,8 @@
         private System.Windows.Forms.Button btnNumPad2;
         private System.Windows.Forms.Button btnNumPad1;
         private System.Windows.Forms.Button btnNumPad0;
+        private System.Windows.Forms.Button btnDecimalMark;
+        private System.Windows.Forms.Button btnDeleteLastDigit;
     }
 }
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,12 +18,19 @@ namespace Calculator
         double num1 = 0d;
         double num2 = 0d;
         bool txtBoxNum1Selected = false;
-        bool txtBoxNum2Selected = false;
+        //bool txtBoxNum2Selected = false;
+
+        char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+        //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​ator
 
         public Form1()
         {
             InitializeComponent();
             textBoxNum1.Select();
+            if (currentCultureDecimalMark == '.')
+            {
+                btnDecimalMark.Text = ".";
+            }
         }
 
         public double Sum(string a, string b)
@@ -238,15 +247,26 @@ namespace Calculator
 
         private void btnClearCurrent_Click(object sender, EventArgs e)
         {
-            if (textBoxNum1.Text != "" && textBoxNum2.Text != "")
-            {
-                textBoxNum2.Text = "";
-                textBoxNum2.Select();
-            }
-            else if (textBoxNum1.Text != "" && textBoxNum2.Text == "")
+            //if (textBoxNum1.Text != "" && textBoxNum2.Text != "")
+            //{
+            //    textBoxNum2.Text = "";
+            //    textBoxNum2.Select();
+            //}
+            //else if (textBoxNum1.Text != "" && textBoxNum2.Text == "")
+            //{
+            //    textBoxNum1.Text = "";
+            //    textBoxNum1.Select();
+            //}
+
+            if (txtBoxNum1Selected)
             {
                 textBoxNum1.Text = "";
                 textBoxNum1.Select();
+            }
+            else
+            {
+                textBoxNum2.Text = "";
+                textBoxNum2.Select();
             }
         }
 
@@ -379,13 +399,13 @@ namespace Calculator
         private void textBoxNum1_Enter(object sender, EventArgs e)
         {
             txtBoxNum1Selected = true;
-            txtBoxNum2Selected = false;
+            //txtBoxNum2Selected = false;
         }
 
         private void textBoxNum2_Enter(object sender, EventArgs e)
         {
             txtBoxNum1Selected = false;
-            txtBoxNum2Selected = true;
+            //txtBoxNum2Selected = true;
         }
 
         private void btnNumPad2_Click(object sender, EventArgs e)
@@ -431,6 +451,30 @@ namespace Calculator
         private void btnNumPad0_Click(object sender, EventArgs e)
         {
             AppendNumberFromNumPad("0");
+        }
+
+        private void btnDecimalMark_Click(object sender, EventArgs e)
+        {
+            if (currentCultureDecimalMark == ',')
+            {
+                AppendNumberFromNumPad(",");
+            }
+            else
+            {
+                AppendNumberFromNumPad(".");
+            }
+        }
+
+        private void btnDeleteLastDigit_Click(object sender, EventArgs e)
+        {
+            if (txtBoxNum1Selected)
+            {
+                textBoxNum1.Text = textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
+            }
+            else
+            {
+                textBoxNum2.Text = textBoxNum2.Text.Remove(textBoxNum2.Text.Length - 1, 1);
+            }
         }
     }
 }
