@@ -19,6 +19,7 @@ namespace Calculator
         double num2 = 0d;
         int selectionStart = 0;
         bool txtBoxNum1Selected = true;
+        string keepTextFromTextBox = "";
 
         char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​ator
@@ -44,8 +45,7 @@ namespace Calculator
             else
             {
                 return 0;
-            }
-            
+            }    
         }
         public double Multiply(string a, string b)
         {
@@ -59,7 +59,6 @@ namespace Calculator
             {
                 return 0;
             }
-
         }
         public double Substract(string a, string b)
         {
@@ -73,7 +72,6 @@ namespace Calculator
             {
                 return 0;
             }
-
         }
         public double Divide(string a, string b)
         {
@@ -303,7 +301,7 @@ namespace Calculator
                 case Keys.Multiply: btnMultiply.PerformClick(); break;
                 case Keys.Divide: btnDivide.PerformClick(); break;
                 case Keys.Enter: btnResult.PerformClick(); break;
-                case Keys.Clear: btnDeleteLastDigit.PerformClick(); break;
+                case Keys.Clear: btnDeleteOneDigit.PerformClick(); break;
                 default:
                     break;
             }
@@ -338,61 +336,70 @@ namespace Calculator
 
         private void btnSqrt_Click(object sender, EventArgs e)
         {
-            if (textBoxResult.Text != "" && lblNum2.Text != "")
+            try
             {
-                lblAction.Text = $"Sqrt({textBoxResult.Text})";
-                textBoxResult.Text = Math.Sqrt(double.Parse(textBoxResult.Text)).ToString();
-                textBoxNum1.Text = textBoxResult.Text;
+                if (txtBoxNum1Selected)
+                {
+                    keepTextFromTextBox = textBoxNum1.Text;
+                    textBoxNum1.Text = Math.Sqrt(double.Parse(textBoxNum1.Text)).ToString();
+                    lblNum1.Text = $"Sqrt({keepTextFromTextBox})";
+                }
+                else
+                {
+                    keepTextFromTextBox = textBoxNum2.Text;
+                    textBoxNum2.Text = Math.Sqrt(double.Parse(textBoxNum2.Text)).ToString();
+                    lblNum2.Text = $"Sqrt({keepTextFromTextBox})";
+                }
             }
-            else if (textBoxNum2.Text != "")
+            catch (FormatException)
             {
-                lblNum2.Text = $"Sqrt({textBoxNum2.Text})";
-                textBoxNum2.Text = Math.Sqrt(double.Parse(textBoxNum2.Text)).ToString();
-            }
-            else if (textBoxNum1.Text != "")
-            {
-                lblNum1.Text = $"Sqrt({textBoxNum1.Text})";
-                textBoxNum1.Text = Math.Sqrt(double.Parse(textBoxNum1.Text)).ToString();
+                PreserveSelectedTextBoxSelection();
             }
         }
 
         private void btnNegate_Click(object sender, EventArgs e)
         {
-            if (textBoxResult.Text != "" && lblNum2.Text != "")
+            try
             {
-                lblAction.Text = $"Negate({textBoxResult.Text})";
-                textBoxResult.Text = (double.Parse(textBoxResult.Text)*(-1)).ToString();
-                textBoxNum1.Text = textBoxResult.Text;
+                if (txtBoxNum1Selected)
+                {
+                    keepTextFromTextBox = textBoxNum1.Text;
+                    textBoxNum1.Text = (double.Parse(textBoxNum1.Text) * (-1)).ToString();
+                    lblNum1.Text = $"Negate({keepTextFromTextBox})";
+                }
+                else
+                {
+                    keepTextFromTextBox = textBoxNum2.Text;
+                    textBoxNum2.Text = (double.Parse(textBoxNum2.Text) * (-1)).ToString();
+                    lblNum2.Text = $"Negate({keepTextFromTextBox})";
+                }
             }
-            else if (textBoxNum2.Text != "")
+            catch (FormatException)
             {
-                lblNum2.Text = $"Negate({textBoxNum2.Text})";
-                textBoxNum2.Text = (double.Parse(textBoxNum2.Text) * (-1)).ToString();
-            }
-            else if (textBoxNum1.Text != "")
-            {
-                lblNum1.Text = $"Negate({textBoxNum1.Text})";
-                textBoxNum1.Text = (double.Parse(textBoxNum1.Text) * (-1)).ToString();
+                PreserveSelectedTextBoxSelection();
             }
         }
 
         private void btnReciprocal_Click(object sender, EventArgs e)
         {
-            if (textBoxResult.Text != "" && lblNum2.Text != "")
+            try
             {
-                lblAction.Text = $"Reciprocal({textBoxResult.Text})";
-                textBoxResult.Text = (1 / double.Parse(textBoxResult.Text)).ToString();
-                textBoxNum1.Text = textBoxResult.Text;
+                if (txtBoxNum1Selected)
+                {
+                    keepTextFromTextBox = textBoxNum1.Text;
+                    textBoxNum1.Text = (1 / double.Parse(textBoxNum1.Text)).ToString();
+                    lblNum1.Text = $"Reciprocal({keepTextFromTextBox})";
+                }
+                else
+                {
+                    keepTextFromTextBox = textBoxNum2.Text;
+                    textBoxNum2.Text = (1 / double.Parse(textBoxNum2.Text)).ToString();
+                    lblNum2.Text = $"Reciprocal({keepTextFromTextBox})";
+                }
             }
-            else if (textBoxNum2.Text != "")
+            catch (FormatException)
             {
-                lblNum2.Text = $"Reciprocal({textBoxNum2.Text})";
-                textBoxNum2.Text = (1 / double.Parse(textBoxNum2.Text)).ToString();
-            }
-            else if (textBoxNum1.Text != "")
-            {
-                lblNum1.Text = $"Reciprocal({textBoxNum1.Text})";
-                textBoxNum1.Text = (1 / double.Parse(textBoxNum1.Text)).ToString();
+                PreserveSelectedTextBoxSelection();
             }
         }
 
@@ -478,18 +485,21 @@ namespace Calculator
             {
                 if (txtBoxNum1Selected)
                 {
-                    textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
+                    selectionStart = textBoxNum1.SelectionStart;
+                    textBoxNum1.Text = textBoxNum1.Text.Remove(selectionStart - 1, 1);
+                    textBoxNum1.SelectionStart = selectionStart - 1;
                 }
                 else
                 {
-                    textBoxNum2.Text = textBoxNum2.Text.Remove(textBoxNum2.Text.Length - 1, 1);
+                    selectionStart = textBoxNum2.SelectionStart;
+                    textBoxNum2.Text = textBoxNum2.Text.Remove(selectionStart - 1, 1);
+                    textBoxNum2.SelectionStart = selectionStart - 1;
                 }
             }
             catch (ArgumentOutOfRangeException)
             {
                 PreserveSelectedTextBoxSelection();
-            }
-            
+            } 
         }
     }
 }
