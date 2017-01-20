@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,15 +15,17 @@ namespace Calculator
 {
     public partial class Form1 : Form
     {
-        double catchFormatException;
         double num1 = 0d;
         double num2 = 0d;
         int selectionStart = 0;
         bool txtBoxNum1Selected = true;
         string keepTextFromTextBox = "";
 
+        string pattern = @"\-?[0-9][0-9]*[,]?[0-9]*";
+        
+        string currentNumberTextBox1 = "";
+        string currentNumberTextBox2 = "";
         char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-        //CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSepar‌​ator
 
         public Form1()
         {
@@ -31,6 +34,7 @@ namespace Calculator
             if (currentCultureDecimalMark == '.')
             {
                 btnDecimalMark.Text = ".";
+                pattern = @"\-?[0-9][0-9]*[.]?[0-9]*";
             }
         }
 
@@ -166,43 +170,31 @@ namespace Calculator
 
         private void textBoxNum1_TextChanged(object sender, EventArgs e)
         {
-            try
+            Regex regex = new Regex(pattern);
+            Match match = regex.Match(textBoxNum1.Text);
+            if (textBoxNum1.Text != match.Groups[0].ToString())
             {
-                catchFormatException = double.Parse(textBoxNum1.Text);
+                textBoxNum1.Text = currentNumberTextBox1;
+                textBoxNum1.SelectionStart = textBoxNum1.Text.Length;
             }
-            catch (FormatException)
+            else
             {
-                try
-                {
-                    textBoxNum1.Text = textBoxNum1.Text.Remove(textBoxNum1.Text.Length - 1, 1);
-                    textBoxNum1.Focus();
-                    textBoxNum1.SelectionStart = textBoxNum1.Text.Length;
-                }
-                catch (Exception)
-                {
-                    textBoxNum1.Text = "";
-                }
-            }
+                currentNumberTextBox1 = textBoxNum1.Text;
+            }            
         }
 
         private void textBoxNum2_TextChanged(object sender, EventArgs e)
         {
-            try
+            Regex regex = new Regex(pattern);
+            Match match = regex.Match(textBoxNum2.Text);
+            if (textBoxNum2.Text != match.Groups[0].ToString())
             {
-                catchFormatException = double.Parse(textBoxNum2.Text);
+                textBoxNum2.Text = currentNumberTextBox2;
+                textBoxNum2.SelectionStart = textBoxNum2.Text.Length;
             }
-            catch (FormatException)
+            else
             {
-                try
-                {
-                    textBoxNum2.Text = textBoxNum2.Text.Remove(textBoxNum2.Text.Length - 1, 1);
-                    textBoxNum2.Focus();
-                    textBoxNum2.SelectionStart = textBoxNum2.Text.Length;
-                }
-                catch (Exception)
-                {
-                    textBoxNum2.Text = "";
-                }
+                currentNumberTextBox2 = textBoxNum2.Text;
             }
         }
 
