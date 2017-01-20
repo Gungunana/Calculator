@@ -19,12 +19,13 @@ namespace Calculator
         double num2 = 0d;
         int selectionStart = 0;
         bool txtBoxNum1Selected = true;
+
         string keepTextFromTextBox = "";
 
-        string pattern = @"\-?[0-9][0-9]*[,]?[0-9]*";
-        
+        string pattern = @"\-?[0-9][0-9]*[,]?[0-9]*";  
         string currentNumberTextBox1 = "";
         string currentNumberTextBox2 = "";
+
         char currentCultureDecimalMark = Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
         public Form1()
